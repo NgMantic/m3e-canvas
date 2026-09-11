@@ -13,6 +13,9 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@netlify/blobs": "^11.0.3",
+    "@netlify/functions": "^6.0.0",
+    "@netlify/identity": "^2.0.0",
     "html-to-image": "^1.11.13",
     "motion": "^13.1.1",
     "next": "16.3.4",
