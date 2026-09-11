@@ -103,6 +103,7 @@ import { ThemeContext, ensureFontLoaded, ensureLangFontLoaded } from "@/lib/them
 import { BottomSheet, MobileActionBar, MobileInspector, MobileLang, MobileSettings } from "@/components/Mobile";
 import { ConfirmDialog, IconBtn, Segmented } from "@/components/ui";
 import { Lang, LangContext, SEED_TEXT, getLang, isLang, setGlobalLang, t, translateDefaultFrameName, translateDefaultText } from "@/lib/i18n";
+import { CloudSync } from "@/components/CloudSync";
 
 /** the screens while a model drafts: primary, tertiary and primary container, drifting */
 const DRAFT_GRADIENT = (p: Palette) => `linear-gradient(120deg, ${p.primaryContainer}, ${p.tertiaryContainer}, ${p.primary}, ${p.secondaryContainer}, ${p.primaryContainer})`;
@@ -335,6 +336,7 @@ const LEFT_TABS: { key: LeftTab; icon: string; title: "parts" | "layers" | "colo
 
 export default function Page() {
   /* ---------- document ---------- */
+  const [hadStoredDoc] = useState(() => typeof window !== "undefined" && !!localStorage.getItem(DOC_KEY));
   const [editAccess, setEditAccess] = useState<"checking" | "editable" | "readonly">("checking");
   const [groups, setGroupState] = useState<Group[]>(seed);
   /* Enforce the standalone-modal rule for imports, grouping, undo and all edits. */
@@ -4147,6 +4149,8 @@ export default function Page() {
           onConfirm={clearAll}
         />
       </div>
+
+      <CloudSync doc={doc} onCloudDoc={(next) => applyDoc(next, true)} lang={lang} p={p} hadStoredDoc={hadStoredDoc} />
 
       <AnimatePresence>
         {previewId !== null && frames.length > 0 && (
